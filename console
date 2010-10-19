@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+boot_path =  File.expand_path('./boot', File.dirname(__FILE__))
+command = "irb -r irb/completion -r #{boot_path}"
+exec command
