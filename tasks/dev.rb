@@ -15,6 +15,20 @@ namespace :sphinx do
   task :stop => :enviroment do 
     SphinxController.instance.stop
   end
+
+  desc "rebuild" 
+  task "rebuild" => :enviroment do 
+    SphinxController.instance.stop
+    SphinxController.instance.generate_conf 
+    SphinxController.instance.build_index
+    SphinxController.instance.start
+  end
+
+  desc "restart"
+  task "restart" => :enviroment do 
+    SphinxController.instance.stop
+    SphinxController.instance.start
+  end
 end
 
 namespace :dev do

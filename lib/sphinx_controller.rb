@@ -8,7 +8,7 @@ class SphinxController
 		sphinx_config = YAML.load(ERB.new(File.read(CONFIG_ROOT.join('sphinx.yml'))).result(b)) || {}
 		@ruby_path = IO.popen('which ruby').first.strip
 		@xmlpipe_command        = sphinx_config["xmlpipe_command"]        ||= "#{ruby_path} #{APP_ROOT.join('script/sos_index_source.rb')} #{DATA_ROOT.join('sos.json')}"
-		@index_file_folder      = sphinx_config["index_file_folder"]      ||= APP_ROOT.join('sphinx')
+		@index_file_folder      = sphinx_config["index_file_folder"]      ||= APP_ROOT.join('sphinx/sos_core') #TODO
 		@searchd_port           = sphinx_config["searchd_port"]           ||= 9312
 		@searchd_host       = sphinx_config["searchd_host"]           ||= "localhost"
 		@searchd_log_path       = sphinx_config["searchd_log_path"]       ||= APP_ROOT.join('log/searchd.log')
@@ -18,6 +18,7 @@ class SphinxController
 	end
 
 	def start 
+		STDOUT.puts "starting sphinx searchd"
 		exec("searchd --config #{self.sphinx_conf_path}")  
 	end
 
@@ -33,7 +34,6 @@ class SphinxController
 		else 
 			STDERR.puts "can not find pid file in #{searchd_pid_path}"
 		end
-
 	end
 
 	def build_index 
