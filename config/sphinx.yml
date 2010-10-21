@@ -1,0 +1,6 @@
+#xmlpipe_command: <%= APP_ROOT.join('script/sos_index_source.rb') %> <%= DATA_ROOT.join('sos.json') %>
+#index_file_folder: APP_ROOT/sphinx
+#searchd_port:  9312
+#searchd_log_path: APP_ROOT/log/searchd.log
+#searchd_query_log_path: APP_ROOT/log/searchd_query.log
+#searchd_pid_path: APP_ROOT/log/searchd.pid

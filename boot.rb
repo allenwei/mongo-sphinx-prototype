@@ -3,16 +3,19 @@ require 'bundler'
 
 require 'mongoid'
 require 'riddle'
-
+require 'ruby-debug'
 Bundler.setup
 
-APP_PATH = File.expand_path(File.dirname(__FILE__))
+APP_ROOT = Pathname.new(File.expand_path(File.dirname(__FILE__)))
+DATA_ROOT = APP_ROOT.join("data")
+CONFIG_ROOT = APP_ROOT.join("config")
+MODEL_ROOT = APP_ROOT.join("models")
 
-Dir.glob(File.join(APP_PATH,"models",'*.rb')).each do |model|
+Dir.glob(File.join(APP_ROOT,"models",'*.rb')).each do |model|
   require model
 end
 
-Dir.glob(File.join(APP_PATH,"lib",'*.rb')).each do |lib|
+Dir.glob(File.join(APP_ROOT,"lib",'*.rb')).each do |lib|
   require lib
 end
 

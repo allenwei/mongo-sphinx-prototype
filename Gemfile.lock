@@ -4,7 +4,10 @@ GEM
     activesupport (2.3.10)
     bson (1.0.9)
     bson_ext (1.1.1)
+    columnize (0.3.1)
     durran-validatable (2.0.1)
+    json (1.4.6)
+    linecache (0.43)
     mongo (1.0.9)
       bson (>= 1.0.5)
     mongoid (1.9.2)
@@ -14,6 +17,11 @@ GEM
       mongo (~> 1.0.1)
       will_paginate (< 2.9)
     riddle (1.1.0)
+    ruby-debug (0.10.3)
+      columnize (>= 0.1)
+      ruby-debug-base (~> 0.10.3.0)
+    ruby-debug-base (0.10.3)
+      linecache (>= 0.3)
     will_paginate (2.3.15)
 
 PLATFORMS
@@ -21,5 +29,7 @@ PLATFORMS
 
 DEPENDENCIES
   bson_ext
+  json
   mongoid
   riddle
+  ruby-debug

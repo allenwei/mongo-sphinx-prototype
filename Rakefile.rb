@@ -1,6 +1,15 @@
-require(File.join(File.dirname(__FILE__), 'boot'))
+require 'rake'
+app_path = File.expand_path("./", File.dirname(__FILE__))
 
-Dir.glob(File.join(APP_PATH,"tasks",'*.rake')).each do |task|
+task :default do 
+  puts 'spacify rake task you want to execute'
+end
+
+task :enviroment do 
+  require(File.join(app_path, 'boot'))
+end
+
+Dir.glob(File.join(app_path,"tasks",'*.rb')).each do |task|
   require task
 end
 

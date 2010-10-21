@@ -5,3 +5,6 @@ source "http://rubygems.org"
 gem 'mongoid'
 gem 'riddle'
 gem 'bson_ext'
+gem 'json'
+
+gem 'ruby-debug'

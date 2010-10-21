@@ -1,0 +1,38 @@
+source xml_src
+{
+    type = xmlpipe2
+    xmlpipe_command        = <%= xmlpipe_command %>
+    xmlpipe_field          = name
+    xmlpipe_attr_uint      = doc_id
+    xmlpipe_attr_uint      = region_id
+    xmlpipe_attr_uint      = class_crc
+    xmlpipe_attr_uint      = active
+    xmlpipe_attr_timestamp = filing_date
+}
+
+index xml_index
+{
+    source					= xml_src
+    path					  = <%= index_file_folder %>
+    charset_type  	= utf-8
+    min_word_len		= 2
+}
+
+indexer
+{
+    mem_limit				= 32M
+}
+
+searchd
+{
+    listen				  = <%= searchd_host%>:<%= searchd_port %>
+    log						  = <%= searchd_log_path %>
+    query_log				= <%= searchd_query_log_path %>
+    read_timeout	  = 5
+    max_children		= 30
+    pid_file				= <%= searchd_pid_path %>
+    max_matches			= 1000
+    seamless_rotate	= 1
+    preopen_indexes	= 0
+    unlink_old			= 1
+}
