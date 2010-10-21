@@ -15,8 +15,8 @@ module MongoGriffin
 			return if @populated
 			@populated = true
 			prepare_client
-			@results = client.query self.query, indexes
-			@array = @results[:matches].map do |hash| 
+			@result = client.query self.query, indexes
+			@array = @result[:matches].map do |hash| 
 			 	id = hash[:doc]	
 				Sos.where(:id => id).limit(1).first 
 			end
@@ -27,21 +27,57 @@ module MongoGriffin
 			@array
 		end
 
+		def result 
+			populate
+			@result
+		end
+
 		def prepare_client
 			filters = [] 
 			filters += extract_filters
 			#filters += internal_filters
 			client.filters = filters
+			client.group_by = group_by 
+			client.group_function = :attr
+			client.match_mode = match_mode
+		end
+
+		def group_by 
+			@options[:group].to_s
 		end
 
 		def extract_filters
-			return unless @options[:with] 
+			return [] unless @options[:with] 
 			fs = []
 			@options[:with].each_pair do |key, value| 
 				fs << Riddle::Client::Filter.new(key.to_s, filter_value(value))
 			end
 			fs
 		end
+
+		def query
+			@query + conditions_as_query
+		end
+
+		def each_with_groupby_and_count 
+			result[:matches].each_with_index do |match, index| 
+				yield match[:attributes]["@groupby"], match[:attributes]["@count"]
+			end
+		end
+
+		def match_mode
+			@options[:match_mode] || (@options[:conditions].blank? ? :all : :extended)
+		end
+		
+
+		def conditions_as_query
+			return '' if @options[:conditions].blank?
+			keys = @options[:conditions].keys
+			' ' + keys.collect { |key|
+				"@#{key} #{options[:conditions][key]}"
+			}.join(' ')
+		end
+
 
     def filter_value(value)
       case value
